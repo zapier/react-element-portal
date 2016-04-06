@@ -1,3 +1,3 @@
 # react-element-portal
 
-Render a React element inline, but target an element by id
+Render a React component inline, but target an element by id
