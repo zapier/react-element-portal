@@ -1,0 +1,26 @@
+{
+  "name": "react-element-portal",
+  "version": "0.0.0",
+  "description": "Render a React element inline, but target an element by id",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "ava test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zapier/react-element-portal.git"
+  },
+  "keywords": [
+    "react",
+    "element",
+    "portal",
+    "node",
+    "redux"
+  ],
+  "author": "Justin Deal <justin.deal@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zapier/react-element-portal/issues"
+  },
+  "homepage": "https://github.com/zapier/react-element-portal#readme"
+}
