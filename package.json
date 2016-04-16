@@ -1,7 +1,7 @@
 {
   "name": "react-element-portal",
   "version": "0.0.4",
-  "description": "Render a React component inline, but target an element by id",
+  "description": "Render a React component inline, but target a DOM element (or elements) by id or selector.",
   "main": "lib/ElementPortal.js",
   "scripts": {
     "pretest": "cp react-redux-element-portal/src/ElementPortal.js test/helpers/ReduxElementPortal.js",
