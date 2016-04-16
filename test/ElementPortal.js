@@ -8,6 +8,7 @@ import 'babel-core/register';
 
 import uniqueId from './helpers/uniqueId';
 import ElementPortal from '../src/ElementPortal';
+// This is copied from 'react-redux-element-portal', via npm pretest script.
 import ReduxElementPortal from './helpers/ReduxElementPortal';
 
 test('can render to ElementPortal using element id', t => {
