@@ -24,7 +24,6 @@ const reduxPkg = {
     build: 'babel src --out-dir lib',
     prepublish: 'npm run build'
   },
-  keywords: pkg.keywords.concat('redux'),
   peerDependencies: {
     ...pkg.peerDependencies,
     'react-redux': '>=4.0.0'

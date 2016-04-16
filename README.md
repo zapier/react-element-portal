@@ -122,7 +122,7 @@ ReactDOM.render(
 
 Redux is just an example here. You can pass along any context with your own custom component like `Provider`. Look at the [source for Provider](https://github.com/reactjs/react-redux/blob/master/src/components/Provider.js) for reference. It's pretty simple. Just define some context that gets transferred from props to child context. Combine that with `createElementPortal` to customize your ElementPortal. If you want to use Redux _and_ some other custom context, just compose them together, creating your own Provider that internally also uses Redux's `Provider`.
 
-## react-redux-element-portal
+## React Redux Element Portal
 
 For Redux, you don't actually have to use `createElementPortal` at all, because there's already an npm package you can use that does it for you.
 
