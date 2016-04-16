@@ -1,5 +1,7 @@
 # React Element Portal
 
+[![travis](https://travis-ci.org/zapier/react-element-portal.svg?branch=master)](https://travis-ci.org/zapier/react-element-portal)
+
 Render a React component inline, but target a DOM element (or elements) by id or selector.
 
 ## Why?
