@@ -36,7 +36,8 @@ const createElementPortal = (Provider, contextKeys) => {
       id: PropTypes.string,
       selector: PropTypes.string,
       // Remove styles and classes from node.
-      shouldReset: PropTypes.bool
+      shouldReset: PropTypes.bool,
+      view: PropTypes.func
     },
 
     componentDidMount() {
@@ -59,7 +60,11 @@ const createElementPortal = (Provider, contextKeys) => {
           node.removeAttribute('style');
         }
 
-        const children = React.Children.only(this.props.children);
+        const View = this.props.view;
+
+        const children = View ?
+          <View domNode={node}/> :
+          React.Children.only(this.props.children);
 
         ReactDOM.render(
           Provider ? (

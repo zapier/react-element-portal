@@ -61,6 +61,30 @@ test('can render to ElementPortal using selector', t => {
   });
 });
 
+test('can render to ElementPortal using selector with custom component', t => {
+  const node = document.createElement('div');
+  document.body.appendChild(node);
+  const appId = uniqueId();
+  node.innerHTML = `
+    <ul>
+      <li class="greeting">Joe</li>
+      <li class="greeting">Mary</li>
+    </ul>
+    <div id="${appId}">
+    </div>
+  `;
+  const Greeting = ({domNode}) => (<div>Hello {domNode.textContent}</div>);
+  render(
+    <div>
+      <ElementPortal selector="li.greeting" view={Greeting}/>
+    </div>,
+    document.getElementById(appId)
+  );
+  const elements = [].slice.call(node.querySelectorAll('li.greeting'));
+  t.is(elements[0].textContent, 'Hello Joe');
+  t.is(elements[1].textContent, 'Hello Mary');
+});
+
 test('erases classes and styles', t => {
   const node = document.createElement('div');
   document.body.appendChild(node);
