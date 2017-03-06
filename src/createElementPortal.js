@@ -2,6 +2,31 @@ import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import invariant from 'invariant';
 
+const reDataAttr = /^data\-(.+)$/;
+
+export const getNodeData = (node) => {
+  // fallback
+  if (!node.datset) {
+    const result = {};
+    const attributes = node.attributes;
+    for (let i = 0; i < attributes.length; i++) {
+      const attr = attributes[i];
+      const match = attr.name.match(reDataAttr);
+      if (match) {
+        const key = match[1];
+        result[key] = attr.value;
+      }
+    }
+    return result;
+  }
+
+  return Object.keys(node.dataset)
+    .reduce((result, key) => {
+      result[key] = node.dataset[key];
+      return result;
+    }, {});
+};
+
 const createElementPortal = (Provider, contextKeys) => {
 
   invariant(
@@ -63,7 +88,7 @@ const createElementPortal = (Provider, contextKeys) => {
         const View = this.props.view;
 
         const children = View ?
-          <View domNode={node}/> :
+          <View domNode={node} data={getNodeData(node)}/> :
           React.Children.only(this.props.children);
 
         ReactDOM.render(

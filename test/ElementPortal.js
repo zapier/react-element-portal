@@ -85,6 +85,35 @@ test('can render to ElementPortal using selector with custom component', t => {
   t.is(elements[1].textContent, 'Hello Mary');
 });
 
+test('can pass along data attributes', t => {
+  const node = document.createElement('div');
+  document.body.appendChild(node);
+  const headerId = uniqueId();
+  const appId = uniqueId();
+  node.innerHTML = `
+    <div id="${headerId}" data-name="Joe">
+    </div>
+    <div id="${appId}">
+    </div>
+  `;
+  const Greeting = ({data}) => (<div>Hello {data.name}</div>);
+  render(
+    <div>
+      <ElementPortal id={headerId} view={Greeting}/>
+    </div>,
+    document.getElementById(appId)
+  );
+  t.is(document.getElementById(headerId).textContent, 'Hello Joe');
+  // Another render should get same data.
+  render(
+    <div>
+      <ElementPortal id={headerId} view={Greeting}/>
+    </div>,
+    document.getElementById(appId)
+  );
+  t.is(document.getElementById(headerId).textContent, 'Hello Joe');
+});
+
 test('erases classes and styles', t => {
   const node = document.createElement('div');
   document.body.appendChild(node);
