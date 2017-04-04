@@ -2,12 +2,12 @@ import test from 'ava';
 import React from 'react';
 import { render } from 'react-dom';
 import { connect, Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { compose, createStore } from 'redux';
 
 import 'babel-core/register';
 
 import uniqueId from './helpers/uniqueId';
-import ElementPortal from '../src/ElementPortal';
+import ElementPortal, { withElementPortal } from '../src';
 
 test('can render to ElementPortal using element id', t => {
   const node = document.createElement('div');
@@ -173,4 +173,105 @@ test('transfers context to the portal', t => {
   t.is(document.getElementById(headerId).textContent, '0');
   store.dispatch({type: 'INC'});
   t.is(document.getElementById(headerId).textContent, '1');
+});
+
+test('can be used as higher-order component', t => {
+  const node = document.createElement('div');
+  document.body.appendChild(node);
+  const headerId = uniqueId();
+  const appId = uniqueId();
+  node.innerHTML = `
+    <div id="${headerId}">
+    </div>
+    <div id="${appId}">
+    </div>
+  `;
+  const Greeting = () => (<div>Hello</div>);
+  const GreetingWithPortal = withElementPortal(Greeting);
+
+  render(
+    <div>
+      <GreetingWithPortal id={headerId} />
+    </div>,
+    document.getElementById(appId)
+  );
+  t.is(document.getElementById(headerId).textContent, 'Hello');
+});
+
+test('can be composed with other HOC\'s', t => {
+  const store = createStore((state = { name: 'world' }) => {
+    return state;
+  });
+  const node = document.createElement('div');
+  document.body.appendChild(node);
+  const headerId = uniqueId();
+  const appId = uniqueId();
+  node.innerHTML = `
+    <div id="${headerId}">
+    </div>
+    <div id="${appId}">
+    </div>
+  `;
+
+  const MyComponent = (props) => <h1>Hello, {props.name}!</h1>;
+
+  const MyComposedComponent = compose(
+    withElementPortal,
+    connect((state) => ({ name: state.name }))
+  )(MyComponent);
+
+  render(
+    <Provider store={store}>
+      <MyComposedComponent id={headerId} />
+    </Provider>,
+    document.getElementById(appId)
+  );
+
+  t.is(document.getElementById(headerId).textContent, 'Hello, world!');
+});
+
+test('passes along data attributes when used as HOC', t => {
+  const node = document.createElement('div');
+  document.body.appendChild(node);
+  const headerId = uniqueId();
+  const appId = uniqueId();
+  node.innerHTML = `
+    <div id="${headerId}" data-name="Joe">
+    </div>
+    <div id="${appId}">
+    </div>
+  `;
+  const Greeting = ({data}) => (<div>Hello {data.name}</div>);
+  const GreetingWithPortal = withElementPortal(Greeting);
+
+  render(
+    <div>
+      <GreetingWithPortal id={headerId} />
+    </div>,
+    document.getElementById(appId)
+  );
+  t.is(document.getElementById(headerId).textContent, 'Hello Joe');
+});
+
+test('passes props through to the inner component when used as a HOC', t => {
+  const node = document.createElement('div');
+  document.body.appendChild(node);
+  const headerId = uniqueId();
+  const appId = uniqueId();
+  node.innerHTML = `
+    <div id="${headerId}">
+    </div>
+    <div id="${appId}">
+    </div>
+  `;
+  const Greeting = ({name}) => (<div>Hello {name}</div>);
+  const GreetingWithPortal = withElementPortal(Greeting);
+
+  render(
+    <div>
+      <GreetingWithPortal id={headerId} name="Joe" />
+    </div>,
+    document.getElementById(appId)
+  );
+  t.is(document.getElementById(headerId).textContent, 'Hello Joe');
 });
