@@ -4,14 +4,10 @@
   "description": "Render a React component inline, but target a DOM element (or elements) by id or selector.",
   "main": "lib/ElementPortal.js",
   "scripts": {
-    "pretest": "cp react-redux-element-portal/src/ElementPortal.js test/helpers/ReduxElementPortal.js",
     "test": "ava test",
     "prebuild": "rm -rf lib && mkdir -p lib",
     "build": "babel src --out-dir lib",
-    "build-packages": "babel-node build-packages.js",
-    "publish-packages": "babel-node publish-packages.js",
     "prepublish": "npm run build",
-    "postpublish": "npm run build-packages && npm run publish-packages",
     "patch-release": "npm version patch && npm publish && git push --follow-tags"
   },
   "repository": {
@@ -68,7 +64,5 @@
       "./test/helpers/setup-browser-env.js"
     ]
   },
-  "dependencies": {
-    "invariant": "^2.0.0"
-  }
+  "dependencies": {}
 }

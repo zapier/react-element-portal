@@ -8,8 +8,6 @@ import 'babel-core/register';
 
 import uniqueId from './helpers/uniqueId';
 import ElementPortal from '../src/ElementPortal';
-// This is copied from 'react-redux-element-portal', via npm pretest script.
-import ReduxElementPortal from './helpers/ReduxElementPortal';
 
 test('can render to ElementPortal using element id', t => {
   const node = document.createElement('div');
@@ -141,8 +139,7 @@ test('erases classes and styles', t => {
   t.is(document.getElementById(headerId).getAttribute('style'), null);
 });
 
-// react-redux-element-portal
-test('use react-redux-element-portal', t => {
+test('transfers context to the portal', t => {
   const store = createStore((state = 0, action) => {
     if (action && action.type === 'INC') {
       return state + 1;
@@ -166,9 +163,9 @@ test('use react-redux-element-portal', t => {
   render(
     <Provider store={store}>
       <div>
-        <ReduxElementPortal id={headerId}>
+        <ElementPortal id={headerId}>
           <CountContainer/>
-        </ReduxElementPortal>
+        </ElementPortal>
       </div>
     </Provider>,
     document.getElementById(appId)
