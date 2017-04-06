@@ -74,5 +74,41 @@ You can also use a selector instead of an id.
 </ElementPortal>
 ```
 
+## Additional features
+The `shouldReset` prop can be used to remove any classes and styles from the DOM node we are rendering to:
+
+```js
+// All styles and classes from the node with id "header" will be cleared
+<ElementPortal id="header" shouldReset>
+  <div>
+    ...
+  </div>
+</ElementPortal>
+```
+
+`ElementPortal` also accepts an optional `view` prop that takes a component, to be rendered inside the portal:
+
+```js
+<ElementPortal id="header" view="CoolHeaderComponent" />
+```
+
+One advantage of using the `view` prop to specify a component is that any `data-` attributes from the DOM node the portal is rendering to will be passed along to our component as a `data` prop.
+For example, if the DOM node we are rendering to looks like this:
+
+```html
+<div id="header" data-user-id="26742" data-name="Joe">
+  ...
+</div>
+```
+
+Then our `CoolHeaderComponent` from the example above would receive the following `data` prop:
+
+```js
+{
+  'user-id': '26742',
+  name: 'Joe'
+}
+```
+
 ## Passing context to your ElementPortal
 Context from your main tree is passed down automatically to your `ElementPortal`. For example, if you use Redux, the `store` context will not get lost, and using `connect` will behave as expected in the children of your `ElementPortal`.
