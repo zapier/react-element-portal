@@ -14,12 +14,6 @@ If you're making a shiny new React app where you use React everywhere, for every
 npm install react-element-portal --save
 ```
 
-To get an ElementPortal bound to Redux Provider, you can use `react-redux-element-portal`.
-
-```bash
-npm install react-redux-element-portal --save
-```
-
 ## Usage with vanilla React
 
 Let's say we get this from the server:
@@ -80,56 +74,41 @@ You can also use a selector instead of an id.
 </ElementPortal>
 ```
 
-## Passing context to your ElementPortal
-
-When we render outside your main tree, context will be lost. For example, if you use with Redux, the `store` context gets lost, so `connect` won't work on children of your `ElementPortal`. You can use `createElementPortal` to create a custom ElementPortal that passes along context.
-
-An example with Redux:
+## Additional features
+The `shouldReset` prop can be used to remove any classes and styles from the DOM node we are rendering to:
 
 ```js
-import { createElementPortal } from 'redux-element-portal';
-import { Provider } from 'react-redux';
-
-// Bind an ElementPortal to a Provider component and pass 'store' context into that provider.
-const ElementPortal = createElementPortal(Provider, ['store']);
-
-const UserMenu = ({user}) => (
+// All styles and classes from the node with id "header" will be cleared
+<ElementPortal id="header" shouldReset>
   <div>
-    <Menu>
-      <Label>{user.firstName}</Label>
-      <Items>
-        <Item>Upgrade</Item>
-        <Item>Settings</Item>
-        <Item>Support</Item>
-      </Items>
-    </Menu>
+    ...
   </div>
-);
-
-const UserMenuContainer = connect(state => ({
-  user: state.user
-}))(UserMenu);
-
-ReactDOM.render(
-  <Provider store={store}>
-    <div>
-      <ElementPortal id="user">
-        <UserMenuContainer/>
-      </ElementPortal>
-    </div>
-  </Provider>,
-  document.getElementById('app')
-);
+</ElementPortal>
 ```
 
-Redux is just an example here. You can pass along any context with your own custom component like `Provider`. Look at the [source for Provider](https://github.com/reactjs/react-redux/blob/master/src/components/Provider.js) for reference. It's pretty simple. Just define some context that gets transferred from props to child context. Combine that with `createElementPortal` to customize your ElementPortal. If you want to use Redux _and_ some other custom context, just compose them together, creating your own Provider that internally also uses Redux's `Provider`.
-
-## React Redux Element Portal
-
-For Redux, you don't actually have to use `createElementPortal` at all, because there's already an npm package you can use that does it for you.
+`ElementPortal` also accepts an optional `view` prop that takes a component, to be rendered inside the portal:
 
 ```js
-import ElementPortal from 'react-redux-element-portal';
-
-// ElementPortal is already bound to Provider.
+<ElementPortal id="header" view="CoolHeaderComponent" />
 ```
+
+One advantage of using the `view` prop to specify a component is that any `data-` attributes from the DOM node the portal is rendering to will be passed along to our component as a `data` prop.
+For example, if the DOM node we are rendering to looks like this:
+
+```html
+<div id="header" data-user-id="26742" data-name="Joe">
+  ...
+</div>
+```
+
+Then our `CoolHeaderComponent` from the example above would receive the following `data` prop:
+
+```js
+{
+  'user-id': '26742',
+  name: 'Joe'
+}
+```
+
+## Passing context to your ElementPortal
+Context from your main tree is passed down automatically to your `ElementPortal`. For example, if you use Redux, the `store` context will not get lost, and using `connect` will behave as expected in the children of your `ElementPortal`.

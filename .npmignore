@@ -14,6 +14,3 @@ coverage
 
 # Optional REPL history
 .node_repl_history
-
-# Sub packages
-/react-redux-element-portal
