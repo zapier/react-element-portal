@@ -27,7 +27,6 @@ export const getNodeData = (node) => {
 };
 
 const ElementPortal = React.createClass({
-
   propTypes: {
     id: PropTypes.string,
     selector: PropTypes.string,

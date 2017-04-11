@@ -110,5 +110,34 @@ Then our `CoolHeaderComponent` from the example above would receive the followin
 }
 ```
 
+## Usage as Higher Order Component
+`ElementPortal` can also be used as a [HOC](https://facebook.github.io/react/docs/higher-order-components.html):
+
+```js
+import { withElementPortal } from 'react-element-portal';
+import MyComponent from 'my-component';
+
+const MyComponentWithPortal = withElementPortal(MyComponent);
+
+ReactDOM.render(
+  <MyComponentWithPortal id="user" />,
+  document.getElementById('app')
+);
+```
+
+or composing with other HOC's:
+
+```js
+import { withElementPortal } from 'react-element-portal';
+import { compose, connect } from 'react-redux';
+
+const MyComponent = (props) => <h1>Hello, {props.name}!</h1>;
+
+const MyComposedComponent = compose(
+  withElementPortal,
+  connect((state) => ({ name: state.name }))
+)(MyComponent);
+```
+
 ## Passing context to your ElementPortal
 Context from your main tree is passed down automatically to your `ElementPortal`. For example, if you use Redux, the `store` context will not get lost, and using `connect` will behave as expected in the children of your `ElementPortal`.
