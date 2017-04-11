@@ -1,6 +1,6 @@
 {
   "name": "react-element-portal",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Render a React component inline, but target a DOM element (or elements) by id or selector.",
   "main": "lib/index.js",
   "scripts": {
