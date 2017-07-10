@@ -89,7 +89,7 @@ The `shouldReset` prop can be used to remove any classes and styles from the DOM
 `ElementPortal` also accepts an optional `view` prop that takes a component, to be rendered inside the portal:
 
 ```js
-<ElementPortal id="header" view="CoolHeaderComponent" />
+<ElementPortal id="header" view={CoolHeaderComponent} />
 ```
 
 One advantage of using the `view` prop to specify a component is that any `data-` attributes from the DOM node the portal is rendering to will be passed along to our component as a `data` prop.
