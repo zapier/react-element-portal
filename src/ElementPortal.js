@@ -5,7 +5,7 @@ const reDataAttr = /^data\-(.+)$/;
 
 export const getNodeData = (node) => {
   // fallback
-  if (!node.datset) {
+  if (!node.dataset) {
     const result = {};
     const attributes = node.attributes;
     for (let i = 0; i < attributes.length; i++) {
