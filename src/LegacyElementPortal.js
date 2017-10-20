@@ -4,6 +4,9 @@ import ReactDOM from 'react-dom';
 import propTypes from './utils/propTypes';
 import renderToNodes from './utils/renderToNodes';
 
+/**
+ * LegacyElementPortal is compatible with any version of React prior to 16.
+ */
 class LegacyElementPortal extends Component {
   static propTypes = propTypes;
 
