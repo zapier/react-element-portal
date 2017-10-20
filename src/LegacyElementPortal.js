@@ -1,11 +1,10 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
 
 import getPropTypes from './utils/getPropTypes';
 import renderToNodes from './utils/renderToNodes';
 
-const LegacyElementPortal = React.createClass({
-  propTypes: getPropTypes(),
+class LegacyElementPortal {
+  static propTypes = getPropTypes();
 
   renderPortals() {
     renderToNodes(this.props, (children, node) => {
@@ -15,19 +14,19 @@ const LegacyElementPortal = React.createClass({
         node
       );
     });
-  },
+  }
 
   componentDidMount() {
     this.renderPortals();
-  },
+  }
 
   componentDidUpdate() {
     this.renderPortals();
-  },
+  }
 
   render() {
     return null;
   }
-});
+}
 
 export default LegacyElementPortal;
