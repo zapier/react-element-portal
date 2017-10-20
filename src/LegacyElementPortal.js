@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import getPropTypes from './utils/getPropTypes';
 import renderToNodes from './utils/renderToNodes';
 
-const ElementPortal = React.createClass({
+const LegacyElementPortal = React.createClass({
   propTypes: getPropTypes(),
 
   renderPortals() {
@@ -30,4 +30,4 @@ const ElementPortal = React.createClass({
   }
 });
 
-export default ElementPortal;
+export default LegacyElementPortal;
