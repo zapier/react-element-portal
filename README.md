@@ -8,6 +8,10 @@ Render a React component inline, but target a DOM element (or elements) by id or
 
 If you're making a shiny new React app where you use React everywhere, for every page, and for the entirety of every page, then you probably don't need this. But if you live in an imperfect world, where you have a server-generated header/footer or some static blog pages, or anything else not fully controlled by React, you can use an `ElementPortal` to control those things from inside a single root React element.
 
+## Support
+
+`ElementPortal` supports React `0.14.*`, `15.*` and `16.*`.
+
 ## Install
 
 ```bash
