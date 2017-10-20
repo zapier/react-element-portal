@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom';
 
-import propTypes from './utils/propTypes';
-import renderToNodes from './utils/renderToNodes';
+import propTypes from './propTypes';
+import renderToNodes from './renderToNodes';
 
 /**
  * FiberElementPortal is compatible with React >= 16.
