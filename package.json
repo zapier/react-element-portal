@@ -39,6 +39,7 @@
     "eslint": "^2.5.3",
     "eslint-plugin-react": "^4.2.3",
     "jsdom": "^8.2.0",
+    "raf": "^3.4.0",
     "react": "^16.0.0",
     "react-addons-test-utils": "^0.14.8",
     "react-dom": "^16.0.0",
@@ -61,6 +62,7 @@
       "retainLines": true
     },
     "require": [
+      "raf/polyfill",
       "./test/helpers/setup-browser-env.js"
     ]
   },
