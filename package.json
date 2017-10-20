@@ -48,8 +48,8 @@
     "sinon": "^1.17.3"
   },
   "peerDependencies": {
-    "react": "^0.14.0 || ^15.0.0",
-    "react-dom": "^0.14.0 || ^15.0.0"
+    "react": "^0.14.0 || ^15.0.0 || ^16.0.0",
+    "react-dom": "^0.14.0 || ^15.0.0 || ^16.0.0"
   },
   "ava": {
     "babel": {
@@ -64,5 +64,7 @@
       "./test/helpers/setup-browser-env.js"
     ]
   },
-  "dependencies": {}
+  "dependencies": {
+    "prop-types": "^15.6.0"
+  }
 }
