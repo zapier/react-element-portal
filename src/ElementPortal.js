@@ -1,5 +1,7 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import ReactDOM from 'react-dom';
+import createReactClass from 'create-react-class';
 
 const reDataAttr = /^data\-(.+)$/;
 
@@ -26,7 +28,7 @@ export const getNodeData = (node) => {
     }, {});
 };
 
-const ElementPortal = React.createClass({
+const ElementPortal = createReactClass({
   propTypes: {
     id: PropTypes.string,
     selector: PropTypes.string,

@@ -59,7 +59,7 @@ test('can render to ElementPortal using selector', t => {
   });
 });
 
-test('can render to ElementPortal using selector with custom component', t => {
+test.skip('can render to ElementPortal using selector with custom component', t => {
   const node = document.createElement('div');
   document.body.appendChild(node);
   const appId = uniqueId();

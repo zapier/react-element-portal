@@ -39,17 +39,17 @@
     "eslint": "^2.5.3",
     "eslint-plugin-react": "^4.2.3",
     "jsdom": "^8.2.0",
-    "react": "^0.14.8",
+    "react": "^16.0.0",
     "react-addons-test-utils": "^0.14.8",
-    "react-dom": "^0.14.8",
+    "react-dom": "^16.0.0",
     "react-redux": "^4.4.1",
     "redux": "^3.3.1",
     "shelljs": "^0.6.0",
     "sinon": "^1.17.3"
   },
   "peerDependencies": {
-    "react": "^0.14.0 || ^15.0.0",
-    "react-dom": "^0.14.0 || ^15.0.0"
+    "react": "^0.14.0 || ^15.0.0 || ^16.0.0",
+    "react-dom": "^0.14.0 || ^15.0.0 || ^16.0.0"
   },
   "ava": {
     "babel": {
@@ -64,5 +64,8 @@
       "./test/helpers/setup-browser-env.js"
     ]
   },
-  "dependencies": {}
+  "dependencies": {
+    "create-react-class": "^15.6.2",
+    "prop-types": "^15.6.0"
+  }
 }
