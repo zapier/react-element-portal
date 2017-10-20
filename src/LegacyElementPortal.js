@@ -1,10 +1,11 @@
+import { Component } from 'react';
 import ReactDOM from 'react-dom';
 
-import getPropTypes from './utils/getPropTypes';
+import propTypes from './utils/propTypes';
 import renderToNodes from './utils/renderToNodes';
 
-class LegacyElementPortal {
-  static propTypes = getPropTypes();
+class LegacyElementPortal extends Component {
+  static propTypes = propTypes;
 
   renderPortals() {
     renderToNodes(this.props, (children, node) => {

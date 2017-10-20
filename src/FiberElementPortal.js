@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom';
 
-import getPropTypes from './utils/getPropTypes';
+import propTypes from './utils/propTypes';
 import renderToNodes from './utils/renderToNodes';
 
 const FiberElementPortal = (props) => renderToNodes(props, (children, node) => (
@@ -10,6 +10,6 @@ const FiberElementPortal = (props) => renderToNodes(props, (children, node) => (
   )
 ));
 
-FiberElementPortal.propTypes = getPropTypes();
+FiberElementPortal.propTypes = propTypes;
 
 export default FiberElementPortal;

@@ -8,4 +8,4 @@ const propTypes = {
   view: PropTypes.func
 };
 
-export default () => propTypes;
+export default propTypes;
