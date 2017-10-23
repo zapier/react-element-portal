@@ -24,7 +24,6 @@ const ElementPortal = createReactClass({
   },
 
   renderToNodes() {
-    // TODO: move this to constructor & componentWillReceiveProps
     const nodeById = this.props.id && document.getElementById(this.props.id);
     const nodesById = nodeById ? [nodeById] : [];
     const mapDomNodeToProps = this.props.mapDomNodeToProps || noop;
