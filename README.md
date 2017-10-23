@@ -75,6 +75,9 @@ You can also use a selector instead of an id.
 ```
 
 ## Additional features
+
+### Reset styling
+
 The `shouldReset` prop can be used to remove any classes and styles from the DOM node we are rendering to:
 
 ```js
@@ -86,31 +89,50 @@ The `shouldReset` prop can be used to remove any classes and styles from the DOM
 </ElementPortal>
 ```
 
+### View property
+
 `ElementPortal` also accepts an optional `view` prop that takes a component, to be rendered inside the portal:
 
 ```js
 <ElementPortal id="header" view={CoolHeaderComponent} />
 ```
 
-One advantage of using the `view` prop to specify a component is that any `data-` attributes from the DOM node the portal is rendering to will be passed along to our component as a `data` prop.
-For example, if the DOM node we are rendering to looks like this:
+One advantage of using the `view` prop to the ability to derive properties from the original DOM node to the the component.
+
+Let's say our original DOM element already contains some useful data:
 
 ```html
-<div id="header" data-user-id="26742" data-name="Joe">
-  ...
+<div id="header" data-user-id="26742">
+  Joe
 </div>
 ```
 
-Then our `CoolHeaderComponent` from the example above would receive the following `data` prop:
+And we would like to render the following component:
 
 ```js
-{
-  'user-id': '26742',
-  name: 'Joe'
-}
+const CoolGreeting = ({ userId, name }) => (
+  <div>Welcome <a href={`/profile/${userId}`}>{name}!</a></div>
+)
+```
+
+By using the `mapDomNodeToProps` you can easily pass this data like so:
+
+```js
+import dataAttributes from 'data-attributes';
+
+const mapDomNodeToProps = (node) => ({
+  name: node.textContent,
+  ...dataAttributes(node)
+});
+
+ReactDOM.render(
+  <ElementPortal id="header" mapDomNodeToProps={mapDomNodeToProps} />,
+  document.getElementById('app')
+);
 ```
 
 ## Usage as Higher Order Component
+
 `ElementPortal` can also be used as a [HOC](https://facebook.github.io/react/docs/higher-order-components.html):
 
 ```js
@@ -140,4 +162,5 @@ const MyComposedComponent = compose(
 ```
 
 ## Passing context to your ElementPortal
+
 Context from your main tree is passed down automatically to your `ElementPortal`. For example, if you use Redux, the `store` context will not get lost, and using `connect` will behave as expected in the children of your `ElementPortal`.
