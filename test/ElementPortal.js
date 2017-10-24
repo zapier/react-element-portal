@@ -186,11 +186,13 @@ test('can be used as higher-order component', t => {
     </div>
   `;
   const Greeting = () => (<div>Hello</div>);
-  const GreetingWithPortal = withElementPortal(Greeting);
+  const GreetingWithPortal = withElementPortal({
+    selector: `#${headerId}`
+  })(Greeting);
 
   render(
     <div>
-      <GreetingWithPortal selector={`#${headerId}`} />
+      <GreetingWithPortal />
     </div>,
     document.getElementById(appId)
   );
@@ -215,13 +217,13 @@ test('can be composed with other HOC\'s', t => {
   const MyComponent = (props) => <h1>Hello, {props.name}!</h1>;
 
   const MyComposedComponent = compose(
-    withElementPortal,
+    withElementPortal({ selector: `#${headerId}` }),
     connect((state) => ({ name: state.name }))
   )(MyComponent);
 
   render(
     <Provider store={store}>
-      <MyComposedComponent selector={`#${headerId}`} />
+      <MyComposedComponent />
     </Provider>,
     document.getElementById(appId)
   );
@@ -238,16 +240,18 @@ test('map dom node to props when used as HOC', t => {
     <div id="${headerId}" data-new="true">Joe</div>
     <div id="${appId}">Mary</div>
   `;
-  const mapNodeToProps = (domNode) => ({
-    name: domNode.textContent,
-    isNew: !!domNode.getAttribute('data-new')
-  });
   const Greeting = ({ name, isNew }) => (<div>Hello {isNew && 'and welcome '}{name}</div>);
-  const GreetingWithPortal = withElementPortal(Greeting);
+  const GreetingWithPortal = withElementPortal({
+    selector: `#${headerId}`,
+    mapNodeToProps: (domNode) => ({
+      name: domNode.textContent,
+      isNew: !!domNode.getAttribute('data-new')
+    })
+  })(Greeting);
 
   render(
     <div>
-      <GreetingWithPortal selector={`#${headerId}`} mapNodeToProps={mapNodeToProps} />
+      <GreetingWithPortal />
     </div>,
     document.getElementById(appId)
   );
@@ -266,11 +270,13 @@ test('passes props through to the inner component when used as a HOC', t => {
     </div>
   `;
   const Greeting = ({name}) => (<div>Hello {name}</div>);
-  const GreetingWithPortal = withElementPortal(Greeting);
+  const GreetingWithPortal = withElementPortal({
+    selector: `#${headerId}`
+  })(Greeting);
 
   render(
     <div>
-      <GreetingWithPortal selector={`#${headerId}`} name="Joe" />
+      <GreetingWithPortal name="Joe" />
     </div>,
     document.getElementById(appId)
   );

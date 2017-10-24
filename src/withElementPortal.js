@@ -5,20 +5,18 @@ function getDisplayName(Component) {
   return Component.displayName || Component.name || 'Component';
 }
 
-const withElementPortal = (Child) => {
-  const Portal = ({ selector, resetStyle, mapNodeToProps, ...childProps }) => {
-    const ChildWrapper = (props) => <Child {...childProps} {...props} />;
-    return <ElementPortal
-      selector={selector}
-      component={ChildWrapper}
-      mapNodeToProps={mapNodeToProps}
-      resetStyle={resetStyle}
-    />;
-  };
+const withElementPortal = (portalProps) => (component) => {
+  const WithElementPortal = (props) => (
+    <ElementPortal
+      {...portalProps}
+      component={(mappedProps) => (
+        React.createElement(component, {...props, ...mappedProps})
+      )}
+    />
+  );
 
-  Portal.displayName = `WithElementPortal(${getDisplayName(Child)})`;
-
-  return Portal;
+  WithElementPortal.displayName = `WithElementPortal(${getDisplayName(component)})`;
+  return WithElementPortal;
 };
 
 export default withElementPortal;
