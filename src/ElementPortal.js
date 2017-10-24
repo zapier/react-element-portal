@@ -23,11 +23,8 @@ const ElementPortal = createReactClass({
   },
 
   renderToNodes() {
-    const nodeById = this.props.id && document.getElementById(this.props.id);
-    const nodesById = nodeById ? [nodeById] : [];
     const mapDomNodeToProps = this.props.mapDomNodeToProps || noop;
-    const nodesBySelector = (this.props.selector && [].slice.call(document.querySelectorAll(this.props.selector))) || [];
-    const nodes = nodesById.concat(nodesBySelector);
+    const nodes = (this.props.selector && [].slice.call(document.querySelectorAll(this.props.selector))) || [];
     const { component } = this.props;
 
     nodes.forEach(node => {

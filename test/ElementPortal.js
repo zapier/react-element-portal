@@ -23,7 +23,7 @@ test('can render to ElementPortal using element id', t => {
   const Greeting = () => (<div>Hello</div>);
   render(
     <div>
-      <ElementPortal id={headerId}>
+      <ElementPortal selector={`#${headerId}`}>
         <Greeting/>
       </ElementPortal>
     </div>,
@@ -127,7 +127,7 @@ test('erases classes and styles', t => {
   const Greeting = () => (<div>Hello</div>);
   render(
     <div>
-      <ElementPortal id={headerId} shouldReset>
+      <ElementPortal selector={`#${headerId}`} shouldReset>
         <Greeting/>
       </ElementPortal>
     </div>,
@@ -162,7 +162,7 @@ test('transfers context to the portal', t => {
   render(
     <Provider store={store}>
       <div>
-        <ElementPortal id={headerId}>
+        <ElementPortal selector={`#${headerId}`}>
           <CountContainer/>
         </ElementPortal>
       </div>
@@ -190,7 +190,7 @@ test('can be used as higher-order component', t => {
 
   render(
     <div>
-      <GreetingWithPortal id={headerId} />
+      <GreetingWithPortal selector={`#${headerId}`} />
     </div>,
     document.getElementById(appId)
   );
@@ -221,7 +221,7 @@ test('can be composed with other HOC\'s', t => {
 
   render(
     <Provider store={store}>
-      <MyComposedComponent id={headerId} />
+      <MyComposedComponent selector={`#${headerId}`} />
     </Provider>,
     document.getElementById(appId)
   );
@@ -247,7 +247,7 @@ test('map dom node to props when used as HOC', t => {
 
   render(
     <div>
-      <GreetingWithPortal id={headerId} mapDomNodeToProps={mapDomNodeToProps} />
+      <GreetingWithPortal selector={`#${headerId}`} mapDomNodeToProps={mapDomNodeToProps} />
     </div>,
     document.getElementById(appId)
   );
@@ -270,7 +270,7 @@ test('passes props through to the inner component when used as a HOC', t => {
 
   render(
     <div>
-      <GreetingWithPortal id={headerId} name="Joe" />
+      <GreetingWithPortal selector={`#${headerId}`} name="Joe" />
     </div>,
     document.getElementById(appId)
   );
