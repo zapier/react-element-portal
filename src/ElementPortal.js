@@ -3,11 +3,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import createReactClass from 'create-react-class';
 
+const { slice } = Array.prototype;
+
 const noop = () => {};
 
 const ElementPortal = createReactClass({
   propTypes: {
-    id: PropTypes.string,
     selector: PropTypes.string,
     mapDomNodeToProps: PropTypes.func,
     shouldReset: PropTypes.bool,
@@ -23,26 +24,32 @@ const ElementPortal = createReactClass({
   },
 
   renderToNodes() {
+    const nodes = this.props.selector
+      ? slice.call(document.querySelectorAll(this.props.selector))
+      : null;
+
+    if (nodes) {
+      nodes.forEach(this.renderNode);
+    }
+  },
+
+  renderNode(node) {
     const mapDomNodeToProps = this.props.mapDomNodeToProps || noop;
-    const nodes = (this.props.selector && [].slice.call(document.querySelectorAll(this.props.selector))) || [];
-    const { component } = this.props;
 
-    nodes.forEach(node => {
-      if (this.props.shouldReset) {
-        node.className = '';
-        node.removeAttribute('style');
-      }
+    if (this.props.shouldReset) {
+      node.className = '';
+      node.removeAttribute('style');
+    }
 
-      const children = component
-        ? React.createElement(component, mapDomNodeToProps(node))
-        : React.Children.only(this.props.children);
+    const children = this.props.component
+      ? React.createElement(this.props.component, mapDomNodeToProps(node))
+      : React.Children.only(this.props.children);
 
-      ReactDOM.unstable_renderSubtreeIntoContainer(
-        this,
-        children,
-        node
-      );
-    });
+    ReactDOM.unstable_renderSubtreeIntoContainer(
+      this,
+      children,
+      node
+    );
   },
 
   render() {
