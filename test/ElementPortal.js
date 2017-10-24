@@ -95,14 +95,14 @@ test('map dom node to props', t => {
     <div id="${appId}">
     </div>
   `;
-  const mapDomNodeToProps = (domNode) => ({
+  const mapNodeToProps = (domNode) => ({
     name: domNode.textContent,
     isNew: !!domNode.getAttribute('data-new')
   });
   const Greeting = ({ name, isNew }) => (<div>Hello {isNew && 'and welcome '}{name}</div>);
   render(
     <div>
-      <ElementPortal selector="li.greeting" component={Greeting} mapDomNodeToProps={mapDomNodeToProps} />
+      <ElementPortal selector="li.greeting" component={Greeting} mapNodeToProps={mapNodeToProps} />
     </div>,
     document.getElementById(appId)
   );
@@ -238,7 +238,7 @@ test('map dom node to props when used as HOC', t => {
     <div id="${headerId}" data-new="true">Joe</div>
     <div id="${appId}">Mary</div>
   `;
-  const mapDomNodeToProps = (domNode) => ({
+  const mapNodeToProps = (domNode) => ({
     name: domNode.textContent,
     isNew: !!domNode.getAttribute('data-new')
   });
@@ -247,7 +247,7 @@ test('map dom node to props when used as HOC', t => {
 
   render(
     <div>
-      <GreetingWithPortal selector={`#${headerId}`} mapDomNodeToProps={mapDomNodeToProps} />
+      <GreetingWithPortal selector={`#${headerId}`} mapNodeToProps={mapNodeToProps} />
     </div>,
     document.getElementById(appId)
   );

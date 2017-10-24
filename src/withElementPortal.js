@@ -6,12 +6,12 @@ function getDisplayName(Component) {
 }
 
 const withElementPortal = (Child) => {
-  const Portal = ({ selector, resetStyle, mapDomNodeToProps, ...childProps }) => {
+  const Portal = ({ selector, resetStyle, mapNodeToProps, ...childProps }) => {
     const ChildWrapper = (props) => <Child {...childProps} {...props} />;
     return <ElementPortal
       selector={selector}
       component={ChildWrapper}
-      mapDomNodeToProps={mapDomNodeToProps}
+      mapNodeToProps={mapNodeToProps}
       resetStyle={resetStyle}
     />;
   };
