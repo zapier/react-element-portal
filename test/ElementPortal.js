@@ -127,7 +127,7 @@ test('erases classes and styles', t => {
   const Greeting = () => (<div>Hello</div>);
   render(
     <div>
-      <ElementPortal selector={`#${headerId}`} shouldReset>
+      <ElementPortal selector={`#${headerId}`} resetStyle>
         <Greeting/>
       </ElementPortal>
     </div>,
