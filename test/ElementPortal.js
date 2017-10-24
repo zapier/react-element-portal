@@ -65,13 +65,13 @@ test('can render to ElementPortal using selector with custom component', t => {
   const appId = uniqueId();
   node.innerHTML = `
     <ul>
-      <li class="greeting">Joe</li>
-      <li class="greeting">Mary</li>
+      <li class="greeting"></li>
+      <li class="greeting"></li>
     </ul>
     <div id="${appId}">
     </div>
   `;
-  const Greeting = ({domNode}) => (<div>Hello {domNode.textContent}</div>);
+  const Greeting = () => (<div>Hello</div>);
   render(
     <div>
       <ElementPortal selector="li.greeting" view={Greeting}/>
@@ -79,37 +79,36 @@ test('can render to ElementPortal using selector with custom component', t => {
     document.getElementById(appId)
   );
   const elements = [].slice.call(node.querySelectorAll('li.greeting'));
-  t.is(elements[0].textContent, 'Hello Joe');
-  t.is(elements[1].textContent, 'Hello Mary');
+  t.is(elements[0].textContent, 'Hello');
+  t.is(elements[1].textContent, 'Hello');
 });
 
-test('can pass along data attributes', t => {
+test('map dom node to props', t => {
   const node = document.createElement('div');
   document.body.appendChild(node);
-  const headerId = uniqueId();
   const appId = uniqueId();
   node.innerHTML = `
-    <div id="${headerId}" data-name="Joe">
-    </div>
+    <ul>
+      <li class="greeting" data-new="true">Joe</li>
+      <li class="greeting">Mary</li>
+    </ul>
     <div id="${appId}">
     </div>
   `;
-  const Greeting = ({data}) => (<div>Hello {data.name}</div>);
+  const mapDomNodeToProps = (domNode) => ({
+    name: domNode.textContent,
+    isNew: !!domNode.getAttribute('data-new')
+  });
+  const Greeting = ({ name, isNew }) => (<div>Hello {isNew && 'and welcome '}{name}</div>);
   render(
     <div>
-      <ElementPortal id={headerId} view={Greeting}/>
+      <ElementPortal selector="li.greeting" view={Greeting} mapDomNodeToProps={mapDomNodeToProps} />
     </div>,
     document.getElementById(appId)
   );
-  t.is(document.getElementById(headerId).textContent, 'Hello Joe');
-  // Another render should get same data.
-  render(
-    <div>
-      <ElementPortal id={headerId} view={Greeting}/>
-    </div>,
-    document.getElementById(appId)
-  );
-  t.is(document.getElementById(headerId).textContent, 'Hello Joe');
+  const elements = [].slice.call(node.querySelectorAll('li.greeting'));
+  t.is(elements[0].textContent, 'Hello and welcome Joe');
+  t.is(elements[1].textContent, 'Hello Mary');
 });
 
 test('erases classes and styles', t => {
@@ -230,27 +229,29 @@ test('can be composed with other HOC\'s', t => {
   t.is(document.getElementById(headerId).textContent, 'Hello, world!');
 });
 
-test('passes along data attributes when used as HOC', t => {
+test('map dom node to props when used as HOC', t => {
   const node = document.createElement('div');
   document.body.appendChild(node);
   const headerId = uniqueId();
   const appId = uniqueId();
   node.innerHTML = `
-    <div id="${headerId}" data-name="Joe">
-    </div>
-    <div id="${appId}">
-    </div>
+    <div id="${headerId}" data-new="true">Joe</div>
+    <div id="${appId}">Mary</div>
   `;
-  const Greeting = ({data}) => (<div>Hello {data.name}</div>);
+  const mapDomNodeToProps = (domNode) => ({
+    name: domNode.textContent,
+    isNew: !!domNode.getAttribute('data-new')
+  });
+  const Greeting = ({ name, isNew }) => (<div>Hello {isNew && 'and welcome '}{name}</div>);
   const GreetingWithPortal = withElementPortal(Greeting);
 
   render(
     <div>
-      <GreetingWithPortal id={headerId} />
+      <GreetingWithPortal id={headerId} mapDomNodeToProps={mapDomNodeToProps} />
     </div>,
     document.getElementById(appId)
   );
-  t.is(document.getElementById(headerId).textContent, 'Hello Joe');
+  t.is(document.getElementById(headerId).textContent, 'Hello and welcome Joe');
 });
 
 test('passes props through to the inner component when used as a HOC', t => {
