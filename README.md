@@ -97,7 +97,7 @@ The `shouldReset` prop can be used to remove any classes and styles from the DOM
 <ElementPortal id="header" view={CoolHeaderComponent} />
 ```
 
-One advantage of using the `view` prop to the ability to derive properties from the original DOM node to the the component.
+One advantage of using the `view` prop is the ability to derive properties from the original DOM node and pass them to the the component.
 
 Let's say our original DOM element already contains some useful data:
 
@@ -115,7 +115,7 @@ const CoolGreeting = ({ userId, name }) => (
 )
 ```
 
-By using the `mapDomNodeToProps` you can easily pass this data like so:
+By using the `mapDomNodeToProps` prop, you can easily pass this data like so:
 
 ```js
 import dataAttributes from 'data-attributes';
