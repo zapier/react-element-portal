@@ -10,9 +10,8 @@ const ElementPortal = createReactClass({
     id: PropTypes.string,
     selector: PropTypes.string,
     mapDomNodeToProps: PropTypes.func,
-    // Remove styles and classes from node.
     shouldReset: PropTypes.bool,
-    view: PropTypes.func
+    component: PropTypes.func
   },
 
   componentDidMount() {
@@ -29,6 +28,7 @@ const ElementPortal = createReactClass({
     const mapDomNodeToProps = this.props.mapDomNodeToProps || noop;
     const nodesBySelector = (this.props.selector && [].slice.call(document.querySelectorAll(this.props.selector))) || [];
     const nodes = nodesById.concat(nodesBySelector);
+    const { component } = this.props;
 
     nodes.forEach(node => {
       if (this.props.shouldReset) {
@@ -36,11 +36,9 @@ const ElementPortal = createReactClass({
         node.removeAttribute('style');
       }
 
-      const View = this.props.view;
-
-      const children = View ?
-        <View {...mapDomNodeToProps(node)} /> :
-        React.Children.only(this.props.children);
+      const children = component
+        ? React.createElement(component, mapDomNodeToProps(node))
+        : React.Children.only(this.props.children);
 
       ReactDOM.unstable_renderSubtreeIntoContainer(
         this,

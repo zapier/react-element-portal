@@ -74,7 +74,7 @@ test('can render to ElementPortal using selector with custom component', t => {
   const Greeting = () => (<div>Hello</div>);
   render(
     <div>
-      <ElementPortal selector="li.greeting" view={Greeting}/>
+      <ElementPortal selector="li.greeting" component={Greeting}/>
     </div>,
     document.getElementById(appId)
   );
@@ -102,7 +102,7 @@ test('map dom node to props', t => {
   const Greeting = ({ name, isNew }) => (<div>Hello {isNew && 'and welcome '}{name}</div>);
   render(
     <div>
-      <ElementPortal selector="li.greeting" view={Greeting} mapDomNodeToProps={mapDomNodeToProps} />
+      <ElementPortal selector="li.greeting" component={Greeting} mapDomNodeToProps={mapDomNodeToProps} />
     </div>,
     document.getElementById(appId)
   );
