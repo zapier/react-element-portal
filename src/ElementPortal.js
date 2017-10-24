@@ -10,9 +10,9 @@ const noop = () => {};
 const ElementPortal = createReactClass({
   propTypes: {
     selector: PropTypes.string,
+    component: PropTypes.func,
     mapDomNodeToProps: PropTypes.func,
-    shouldReset: PropTypes.bool,
-    component: PropTypes.func
+    resetStyle: PropTypes.bool
   },
 
   componentDidMount() {
@@ -36,8 +36,8 @@ const ElementPortal = createReactClass({
   renderNode(node) {
     const mapDomNodeToProps = this.props.mapDomNodeToProps || noop;
 
-    if (this.props.shouldReset) {
-      node.className = '';
+    if (this.props.resetStyle) {
+      node.removeAttribute('class');
       node.removeAttribute('style');
     }
 
