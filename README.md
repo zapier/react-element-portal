@@ -115,18 +115,18 @@ const CoolGreeting = ({ userId, name }) => (
 )
 ```
 
-By using the `mapDomNodeToProps` prop, you can easily pass this data like so:
+By using the `mapNodeToProps` prop, you can easily pass this data like so:
 
 ```js
 import dataAttributes from 'data-attributes';
 
-const mapDomNodeToProps = (node) => ({
+const mapNodeToProps = (node) => ({
   name: node.textContent,
   ...dataAttributes(node)
 });
 
 ReactDOM.render(
-  <ElementPortal id="header" mapDomNodeToProps={mapDomNodeToProps} />,
+  <ElementPortal id="header" mapNodeToProps={mapNodeToProps} />,
   document.getElementById('app')
 );
 ```

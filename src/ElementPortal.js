@@ -11,7 +11,7 @@ const ElementPortal = createReactClass({
   propTypes: {
     selector: PropTypes.string,
     component: PropTypes.func,
-    mapDomNodeToProps: PropTypes.func,
+    mapNodeToProps: PropTypes.func,
     resetStyle: PropTypes.bool
   },
 
@@ -34,7 +34,7 @@ const ElementPortal = createReactClass({
   },
 
   renderNode(node) {
-    const mapDomNodeToProps = this.props.mapDomNodeToProps || noop;
+    const mapNodeToProps = this.props.mapNodeToProps || noop;
 
     if (this.props.resetStyle) {
       node.removeAttribute('class');
@@ -42,7 +42,7 @@ const ElementPortal = createReactClass({
     }
 
     const children = this.props.component
-      ? React.createElement(this.props.component, mapDomNodeToProps(node))
+      ? React.createElement(this.props.component, mapNodeToProps(node))
       : React.Children.only(this.props.children);
 
     ReactDOM.unstable_renderSubtreeIntoContainer(
