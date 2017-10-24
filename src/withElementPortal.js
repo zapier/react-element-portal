@@ -6,10 +6,9 @@ function getDisplayName(Component) {
 }
 
 const withElementPortal = (Child) => {
-  const Portal = ({ id, selector, shouldReset, mapDomNodeToProps, ...childProps }) => {
+  const Portal = ({ selector, shouldReset, mapDomNodeToProps, ...childProps }) => {
     const ChildWrapper = (props) => <Child {...childProps} {...props} />;
     return <ElementPortal
-      id={id}
       selector={selector}
       mapDomNodeToProps={mapDomNodeToProps}
       shouldReset={shouldReset}
