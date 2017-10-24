@@ -13,7 +13,7 @@ const withElementPortal = (Child) => {
       selector={selector}
       mapDomNodeToProps={mapDomNodeToProps}
       shouldReset={shouldReset}
-      view={ChildWrapper}
+      component={ChildWrapper}
     />;
   };
 
