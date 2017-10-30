@@ -5,17 +5,17 @@ function getDisplayName(Component) {
   return Component.displayName || Component.name || 'Component';
 }
 
-const withElementPortal = (portalProps) => (component) => {
+const withElementPortal = (portalProps) => (Component) => {
   const WithElementPortal = (props) => (
     <ElementPortal
       {...portalProps}
       component={(mappedProps) => (
-        React.createElement(component, {...props, ...mappedProps})
+        React.createElement(Component, {...props, ...mappedProps})
       )}
     />
   );
 
-  WithElementPortal.displayName = `WithElementPortal(${getDisplayName(component)})`;
+  WithElementPortal.displayName = `WithElementPortal(${getDisplayName(Component)})`;
   return WithElementPortal;
 };
 
