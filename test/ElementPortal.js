@@ -228,7 +228,7 @@ test('erases classes and styles', t => {
   const Greeting = () => (<div>Hello</div>);
   render(
     <div>
-      <ElementPortal selector={`#${headerId}`} resetStyle>
+      <ElementPortal selector={`#${headerId}`} resetAttributes={['class', 'style']}>
         <Greeting/>
       </ElementPortal>
     </div>,
@@ -237,6 +237,36 @@ test('erases classes and styles', t => {
   t.is(document.getElementById(headerId).textContent, 'Hello');
   t.is(document.getElementById(headerId).classList.length, 0);
   t.is(document.getElementById(headerId).getAttribute('style'), null);
+});
+
+test('erases all attributes', t => {
+  const node = document.createElement('div');
+  document.body.appendChild(node);
+  const headerId = uniqueId();
+  const appId = uniqueId();
+  node.innerHTML = `
+    <div id="${headerId}" class="foo" data-bar="baz" qux>
+    </div>
+    <div id="${appId}">
+    </div>
+  `;
+  const headerElement = document.getElementById(headerId);
+  t.is(headerElement.classList.length, 1);
+  t.is(headerElement.getAttribute('data-bar'), 'baz');
+  t.is(headerElement.getAttribute('quz'), null);
+  const Greeting = () => (<div>Hello</div>);
+  render(
+    <div>
+      <ElementPortal selector={`#${headerId}`} resetAttributes={true}>
+        <Greeting/>
+      </ElementPortal>
+    </div>,
+    document.getElementById(appId)
+  );
+  t.is(headerElement.textContent, 'Hello');
+  t.is(headerElement.classList.length, 0);
+  t.is(headerElement.getAttribute('data-bar'), null);
+  t.is(headerElement.getAttribute('qux'), null);
 });
 
 test('transfers context to the portal', t => {
