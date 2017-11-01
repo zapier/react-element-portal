@@ -17,6 +17,19 @@ const toNodesArray = (x) => (
         : null
 );
 
+const removeNodeAttributes = (node, attrs) => {
+  if (attrs === true) {
+    while (node.attributes.length > 0) {
+      node.removeAttribute(node.attributes[0].name);
+    }
+  }
+  else {
+    attrs.forEach(attr => {
+      node.removeAttribute(attr);
+    });
+  }
+};
+
 const ElementPortal = createReactClass({
   propTypes: {
     selector: PropTypes.string,
@@ -27,7 +40,10 @@ const ElementPortal = createReactClass({
     ]),
     component: PropTypes.func,
     mapNodeToProps: PropTypes.func,
-    resetStyle: PropTypes.bool
+    resetAttributes: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.arrayOf(PropTypes.string)
+    ])
   },
 
   componentDidMount() {
@@ -53,9 +69,8 @@ const ElementPortal = createReactClass({
   renderNode(node) {
     const mapNodeToProps = this.props.mapNodeToProps || noop;
 
-    if (this.props.resetStyle) {
-      node.removeAttribute('class');
-      node.removeAttribute('style');
+    if (this.props.resetAttributes) {
+      removeNodeAttributes(node, this.props.resetAttributes);
     }
 
     const children = this.props.component
