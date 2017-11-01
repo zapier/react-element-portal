@@ -9,7 +9,7 @@ import 'babel-core/register';
 import uniqueId from './helpers/uniqueId';
 import ElementPortal, { withElementPortal } from '../src';
 
-test('can render to ElementPortal using element id', t => {
+test('can render to ElementPortal using id selector', t => {
   const node = document.createElement('div');
   document.body.appendChild(node);
   const headerId = uniqueId();
@@ -32,7 +32,7 @@ test('can render to ElementPortal using element id', t => {
   t.is(document.getElementById(headerId).textContent, 'Hello');
 });
 
-test('can render to ElementPortal using selector', t => {
+test('can render to ElementPortal using class selector', t => {
   const node = document.createElement('div');
   document.body.appendChild(node);
   const appId = uniqueId();
@@ -79,6 +79,107 @@ test('can render to ElementPortal using selector with custom component', t => {
     document.getElementById(appId)
   );
   const elements = [].slice.call(node.querySelectorAll('li.greeting'));
+  t.is(elements[0].textContent, 'Hello');
+  t.is(elements[1].textContent, 'Hello');
+});
+
+test('can render to ElementPortal using nodes', t => {
+  const node = document.createElement('div');
+  document.body.appendChild(node);
+  const headerId = uniqueId();
+  const appId = uniqueId();
+  node.innerHTML = `
+    <div id="${headerId}">
+    </div>
+    <div id="${appId}">
+    </div>
+  `;
+  const Greeting = () => (<div>Hello</div>);
+  render(
+    <div>
+      <ElementPortal nodes={document.getElementById(headerId)}>
+        <Greeting/>
+      </ElementPortal>
+    </div>,
+    document.getElementById(appId)
+  );
+  t.is(document.getElementById(headerId).textContent, 'Hello');
+});
+
+test('can render to ElementPortal using nodes', t => {
+  const node = document.createElement('div');
+  document.body.appendChild(node);
+  const appId = uniqueId();
+  node.innerHTML = `
+    <ul>
+      <li class="greeting"></li>
+      <li class="greeting"></li>
+    </ul>
+    <div id="${appId}">
+    </div>
+  `;
+  const Greeting = () => (<div>Hello</div>);
+  const elements = [].slice.call(node.querySelectorAll('li.greeting'));
+  render(
+    <div>
+      <ElementPortal nodes={elements}>
+        <Greeting/>
+      </ElementPortal>
+    </div>,
+    document.getElementById(appId)
+  );
+  elements.forEach(liNode => {
+    t.is(liNode.textContent, 'Hello');
+  });
+});
+
+test('can render to ElementPortal using nodes as a NodeList', t => {
+  const node = document.createElement('div');
+  document.body.appendChild(node);
+  const appId = uniqueId();
+  node.innerHTML = `
+    <ul>
+      <li class="greeting"></li>
+      <li class="greeting"></li>
+    </ul>
+    <div id="${appId}">
+    </div>
+  `;
+  const Greeting = () => (<div>Hello</div>);
+  render(
+    <div>
+      <ElementPortal nodes={node.querySelectorAll('li.greeting')}>
+        <Greeting/>
+      </ElementPortal>
+    </div>,
+    document.getElementById(appId)
+  );
+  const elements = [].slice.call(node.querySelectorAll('li.greeting'));
+  elements.forEach(liNode => {
+    t.is(liNode.textContent, 'Hello');
+  });
+});
+
+test('can render to ElementPortal using nodes with custom component', t => {
+  const node = document.createElement('div');
+  document.body.appendChild(node);
+  const appId = uniqueId();
+  node.innerHTML = `
+    <ul>
+      <li class="greeting"></li>
+      <li class="greeting"></li>
+    </ul>
+    <div id="${appId}">
+    </div>
+  `;
+  const Greeting = () => (<div>Hello</div>);
+  const elements = [].slice.call(node.querySelectorAll('li.greeting'));
+  render(
+    <div>
+      <ElementPortal nodes={elements} component={Greeting}/>
+    </div>,
+    document.getElementById(appId)
+  );
   t.is(elements[0].textContent, 'Hello');
   t.is(elements[1].textContent, 'Hello');
 });
