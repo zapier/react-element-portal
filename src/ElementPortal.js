@@ -3,13 +3,28 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import createReactClass from 'create-react-class';
 
-const { slice } = Array.prototype;
+const { push, slice } = Array.prototype;
 
 const noop = () => {};
+
+const toNodesArray = (x) => (
+  x instanceof NodeList
+    ? slice.call(x)
+    : Array.isArray(x)
+      ? x
+      : x != null
+        ? [x]
+        : null
+);
 
 const ElementPortal = createReactClass({
   propTypes: {
     selector: PropTypes.string,
+    nodes: PropTypes.oneOfType([
+      PropTypes.instanceOf(HTMLElement),
+      PropTypes.instanceOf(NodeList),
+      PropTypes.arrayOf(PropTypes.instanceOf(HTMLElement))
+    ]),
     component: PropTypes.func,
     mapNodeToProps: PropTypes.func,
     resetStyle: PropTypes.bool
@@ -24,12 +39,14 @@ const ElementPortal = createReactClass({
   },
 
   renderToNodes() {
-    const nodes = this.props.selector
-      ? slice.call(document.querySelectorAll(this.props.selector))
-      : null;
+    const { nodes, selector } = this.props;
+    const collectedNodes = [];
 
-    if (nodes) {
-      nodes.forEach(this.renderNode);
+    push.apply(collectedNodes, toNodesArray(document.querySelectorAll(selector)));
+    push.apply(collectedNodes, toNodesArray(nodes));
+
+    if (collectedNodes.length) {
+      collectedNodes.forEach(this.renderNode);
     }
   },
 
