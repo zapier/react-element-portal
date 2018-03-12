@@ -78,12 +78,12 @@ You can also use a selector instead of an id.
 
 ### Reset styling
 
-The `shouldReset` prop can be used to remove any classes and styles from the DOM node we are rendering to:
+The `resetAttributes` prop can be used to remove any attributes from the DOM node we are rendering to:
 
 ```js
 // All styles and classes from the node with id "header" will be cleared
-<ElementPortal id="header" shouldReset>
-  <div>
+<ElementPortal id="header" resetAttributes={['class', 'style']}>
+  <div className="some-other-class">
     ...
   </div>
 </ElementPortal>
