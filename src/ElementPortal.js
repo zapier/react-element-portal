@@ -1,36 +1,66 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createReactClass from 'create-react-class';
 
 const noop = () => {};
 
-const ElementPortal = createReactClass({
-  propTypes: {
+const getNodes = (props) => {
+  const nodeById = props.id && document.getElementById(props.id);
+  const nodesById = nodeById ? [nodeById] : [];
+  const nodesBySelector = (props.selector && [].slice.call(document.querySelectorAll(props.selector))) || [];
+
+  return nodesById.concat(nodesBySelector);
+};
+
+
+class ElementPortal extends React.Component {
+  static propTypes = {
     id: PropTypes.string,
     selector: PropTypes.string,
     mapDomNodeToProps: PropTypes.func,
     // Remove styles and classes from node.
     shouldReset: PropTypes.bool,
     view: PropTypes.func
-  },
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      mounted: false,
+    };
+    this.originalNodes = [];
+  }
 
   componentDidMount() {
-    this.renderToNodes();
-  },
+    getNodes(this.props).forEach(node => {
+      const clone = node.cloneNode(false);
+      this.originalNodes.push(node);
 
-  componentDidUpdate() {
-    this.renderToNodes();
-  },
+      node.parentNode.replaceChild(clone, node);
+    });
 
-  renderToNodes() {
-    const nodeById = this.props.id && document.getElementById(this.props.id);
-    const nodesById = nodeById ? [nodeById] : [];
+    this.setState({
+      mounted: true,
+    });
+  }
+
+  componentWillUnmount() {
+    getNodes(this.props).forEach(node => {
+      const el = this.originalNodes.pop();
+
+      node.parentNode.replaceChild(el, node);
+    });
+  }
+
+  render() {
+    if (!this.state.mounted) {
+      return null;
+    }
+
+    const nodes = getNodes(this.props);
     const mapDomNodeToProps = this.props.mapDomNodeToProps || noop;
-    const nodesBySelector = (this.props.selector && [].slice.call(document.querySelectorAll(this.props.selector))) || [];
-    const nodes = nodesById.concat(nodesBySelector);
 
-    nodes.forEach(node => {
+    return nodes.map((node, i) => {
       if (this.props.shouldReset) {
         node.className = '';
         node.removeAttribute('style');
@@ -39,20 +69,15 @@ const ElementPortal = createReactClass({
       const View = this.props.view;
 
       const children = View ?
-        <View {...mapDomNodeToProps(node)} /> :
+        <View {...mapDomNodeToProps(this.originalNodes[i])} /> :
         React.Children.only(this.props.children);
 
-      ReactDOM.unstable_renderSubtreeIntoContainer(
-        this,
+      return ReactDOM.createPortal(
         children,
         node
       );
     });
-  },
-
-  render() {
-    return null;
   }
-});
+}
 
 export default ElementPortal;
