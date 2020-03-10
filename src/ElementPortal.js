@@ -38,7 +38,7 @@ const ElementPortal = createReactClass({
       PropTypes.instanceOf(NodeList),
       PropTypes.arrayOf(PropTypes.instanceOf(HTMLElement))
     ]),
-    component: PropTypes.func,
+    component: PropTypes.elementType,
     mapNodeToProps: PropTypes.func,
     resetAttributes: PropTypes.oneOfType([
       PropTypes.bool,
